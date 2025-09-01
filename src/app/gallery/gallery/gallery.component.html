@@ -1,0 +1,142 @@
+<div class="bg-gray-100 min-h-full p-4 sm:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">Explore Nossa Galeria</h1>
+      <p class="mt-2 text-lg text-gray-600">Encontre o lugar perfeito para sua próxima aventura.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+      <form #frm="ngForm" (ngSubmit)="onFilter()">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+          <div class="md:col-span-2">
+            <input
+              [(ngModel)]="nameSpotFilter"
+              type="text"
+              name="nameSpotFilter"
+              placeholder="Pesquisar pelo nome do lugar..."
+              class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition focus:outline-none"
+            />
+          </div>
+
+          <div class="md:col-span-2">
+            <select
+              name="valueCategoryFilter"
+              [(ngModel)]="valueCategoryFilter"
+              id="categories-select"
+              class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+            >
+              <option [ngValue]="null" disabled selected>Selecione uma Categoria...</option>
+              <option value="all">Todas as Categorias</option>
+              <option *ngFor="let cat of categoriesFilter" [value]="cat.name">
+                {{ cat.name }}
+              </option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 font-semibold shadow-sm flex items-center justify-center space-x-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+            <span>Pesquisar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="spotsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div
+        class="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+        *ngFor="let spot of spots"
+      >
+        <div class="h-48 overflow-hidden">
+          <img
+            [src]="spot.urlPhoto"
+            [alt]="spot.name"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        </div>
+
+        <div class="p-4 flex flex-col flex-grow">
+          <div class="flex justify-between items-start mb-2">
+            <h2 class="text-xl font-bold text-gray-800 truncate" [title]="spot.name">
+              {{ spot.name }}
+            </h2>
+          </div>
+
+          <p-rating [(ngModel)]="spot.review" [readonly]="true" class="mb-3" />
+
+          <div class="space-y-2 text-sm text-gray-600">
+            <p class="flex items-center">
+              <svg
+                class="w-4 h-4 mr-2 text-blue-500 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 7h.01M7 3h5a2 2 0 012 2v5a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zM7 13h10a2 2 0 012 2v5a2 2 0 01-2 2H7a2 2 0 01-2-2v-5a2 2 0 012-2z"
+                ></path>
+              </svg>
+              <span>{{ spot.category }}</span>
+            </p>
+            <p class="flex items-center">
+              <svg
+                class="w-4 h-4 mr-2 text-blue-500 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+              <span class="truncate" [title]="spot.location">{{ spot.location }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="spots && spots.length === 0" class="text-center py-16">
+      <svg
+        class="mx-auto h-12 w-12 text-gray-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          vector-effect="non-scaling-stroke"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+        />
+      </svg>
+      <h3 class="mt-2 text-xl font-medium text-gray-900">Nenhum local encontrado</h3>
+      <p class="mt-1 text-sm text-gray-500">
+        Tente ajustar seus filtros de pesquisa para encontrar o que procura.
+      </p>
+    </div>
+  </div>
+</div>

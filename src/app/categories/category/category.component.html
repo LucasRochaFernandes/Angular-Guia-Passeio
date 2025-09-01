@@ -1,0 +1,163 @@
+<div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-800">Gerenciar Categorias</h1>
+    <p class="mt-1 text-lg text-gray-600">
+      Adicione, edite ou remova as categorias de lugares do seu guia.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-1">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">
+          <span *ngIf="!isEditing">Nova Categoria</span>
+          <span *ngIf="isEditing">Editando Categoria</span>
+        </h2>
+
+        <form id="categoryForm" [formGroup]="formGroup" (ngSubmit)="onSaveCategory()">
+          <div class="mb-4">
+            <label for="name" class="text-gray-700 font-semibold mb-2 block">Nome</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              placeholder="Ex: Restaurantes, Praias, Museus"
+              class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              required
+            />
+            <div
+              *ngIf="formGroup.get('name')?.touched && formGroup.get('name')?.invalid"
+              class="mt-1 text-red-600 text-sm"
+            >
+              <span *ngIf="formGroup.get('name')?.errors?.['required']">Campo obrigatório.</span>
+              <span *ngIf="formGroup.get('name')?.errors?.['minlength']"
+                >Mínimo de 3 caracteres.</span
+              >
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label for="description" class="text-gray-700 font-semibold mb-2 block"
+              >Descrição</label
+            >
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="3"
+              placeholder="Uma breve descrição sobre esta categoria de lugares."
+              class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              required
+            ></textarea>
+            <div
+              *ngIf="formGroup.get('description')?.touched && formGroup.get('description')?.invalid"
+              class="mt-1 text-red-600 text-sm"
+            >
+              <span *ngIf="formGroup.get('description')?.errors?.['required']"
+                >Campo obrigatório.</span
+              >
+            </div>
+          </div>
+
+          <div class="flex flex-col space-y-2">
+            <button
+              type="submit"
+              [disabled]="formGroup.invalid"
+              class="w-full bg-blue-600 text-white font-bold p-3 rounded-md shadow-sm hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              <span *ngIf="!isEditing">Cadastrar Categoria</span>
+              <span *ngIf="isEditing">Salvar Alterações</span>
+            </button>
+            <button
+              *ngIf="isEditing"
+              type="button"
+              (click)="onCancelEdit()"
+              class="w-full bg-gray-200 text-gray-700 font-bold p-3 rounded-md shadow-sm hover:bg-gray-300 transition"
+            >
+              Cancelar Edição
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Categorias Cadastradas</h2>
+
+        <div
+          *ngIf="!categories || categories.length === 0"
+          class="text-center py-10 border-2 border-dashed rounded-md"
+        >
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 7h.01M7 3h5a2 2 0 012 2v5a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zM7 13h10a2 2 0 012 2v5a2 2 0 01-2 2H7a2 2 0 01-2-2v-5a2 2 0 012-2z"
+            ></path>
+          </svg>
+          <h3 class="mt-2 text-lg font-medium text-gray-900">Nenhuma categoria encontrada</h3>
+          <p class="mt-1 text-sm text-gray-500">
+            Comece cadastrando uma nova categoria no formulário ao lado.
+          </p>
+        </div>
+
+        <div *ngIf="categories && categories.length > 0" class="space-y-4">
+          <div
+            *ngFor="let category of categories"
+            class="flex items-center justify-between p-4 border rounded-md hover:bg-gray-50 transition-colors"
+          >
+            <div>
+              <p class="font-bold text-gray-800">{{ category.name }}</p>
+              <p class="text-sm text-gray-600">{{ category.description }}</p>
+            </div>
+
+            <div class="flex space-x-2">
+              <button
+                (click)="onEdit(category)"
+                class="p-2 text-blue-600 hover:text-blue-800"
+                title="Editar"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L16.732 3.732z"
+                  ></path>
+                </svg>
+              </button>
+              <button
+                (click)="onDelete(category.id)"
+                class="p-2 text-red-500 hover:text-red-700"
+                title="Excluir"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

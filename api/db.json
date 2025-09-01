@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "id": "a8d6a9ae-5839-4f74-ab1a-d5e702aae1df",
+      "name": "Mirante",
+      "description": "Local alto para admirar a vista"
+    },
+    {
+      "id": "f1f11596-0ac5-410a-b0fa-54b8d8abde05",
+      "name": "Restaurante",
+      "description": "Estabelecimento que oferece comidas e bebidas"
+    },
+    {
+      "id": "da41abca-56e1-485f-bd33-80343924a37e",
+      "name": "Praia",
+      "description": "Locais à beira da Praia"
+    }
+  ],
+  "spots": [
+    {
+      "id": "6cc90e75-a6cc-4342-9e2f-76c2f6fd1462",
+      "name": "Mirante do Amor",
+      "category": "Mirante",
+      "location": "Itabira, MG",
+      "urlPhoto": "https://media-cdn.tripadvisor.com/media/photo-s/10/92/36/3c/vista-panoramica-da-cidade.jpg",
+      "review": 5
+    },
+    {
+      "id": "d192285f-12a3-4c24-8af9-7d3aeb4a6d66",
+      "name": "Praia das Conchas",
+      "category": "Praia",
+      "location": "São Paulo, SP",
+      "urlPhoto": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/20/d9/9a/perfeita-fora-de-temporada.jpg?w=1200&h=-1&s=1",
+      "review": 4
+    },
+    {
+      "id": "d525f31a-893e-436b-b6fd-e3c08c1d7a09",
+      "name": "Restaurante Casa de Tereza",
+      "category": "Restaurante",
+      "location": "Salvador, BA",
+      "urlPhoto": "https://s2-g1.glbimg.com/sBePVRW7mgG9OQfkVy9fU4NPZgA=/0x0:626x451/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2023/t/X/KMll7lR5qjW2aCdk6KAA/espaco-do-amado-1-1-.png",
+      "review": 5
+    }
+  ]
+}

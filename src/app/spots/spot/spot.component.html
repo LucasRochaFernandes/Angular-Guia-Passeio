@@ -1,0 +1,159 @@
+<div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-800">Gerenciar Lugares</h1>
+    <p class="mt-1 text-lg text-gray-600">Adicione, edite ou remova os lugares do seu guia.</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-1">
+      <div class="bg-white p-6 rounded-lg shadow-lg sticky top-24">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">
+          <span *ngIf="!isEditing">Adicionar Novo Lugar</span>
+          <span *ngIf="isEditing">Editando Lugar</span>
+        </h2>
+
+        <form [formGroup]="formGroup" (ngSubmit)="onSaveSpot()">
+          <div class="space-y-4">
+            <div>
+              <label for="name" class="text-gray-700 font-semibold mb-1 block">Nome do Lugar</label>
+              <input
+                id="name"
+                type="text"
+                formControlName="name"
+                placeholder="Ex: Mirante da Serra"
+                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              />
+              <div
+                *ngIf="formGroup.get('name')?.touched && formGroup.get('name')?.invalid"
+                class="mt-1 text-red-600 text-sm"
+              >
+                <span *ngIf="formGroup.get('name')?.errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="formGroup.get('name')?.errors?.['minlength']"
+                  >Mínimo de 8 caracteres.</span
+                >
+              </div>
+            </div>
+            <div>
+              <label for="category" class="text-gray-700 font-semibold mb-1 block">Categoria</label>
+              <select
+                id="category"
+                formControlName="category"
+                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              >
+                <option [ngValue]="null" disabled>Selecione...</option>
+                <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+              </select>
+            </div>
+            <div>
+              <label for="location" class="text-gray-700 font-semibold mb-1 block"
+                >Localização</label
+              >
+              <input
+                id="location"
+                type="text"
+                formControlName="location"
+                placeholder="Ex: Itabira, MG"
+                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label for="urlPhoto" class="text-gray-700 font-semibold mb-1 block"
+                >URL da Foto</label
+              >
+              <input
+                id="urlPhoto"
+                type="text"
+                formControlName="urlPhoto"
+                placeholder="https://exemplo.com/foto.jpg"
+                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label class="text-gray-700 font-semibold mb-2 block">Avaliação</label>
+              <p-rating formControlName="review" [stars]="5"></p-rating>
+            </div>
+          </div>
+          <div class="flex flex-col space-y-2 mt-6">
+            <button
+              type="submit"
+              [disabled]="formGroup.invalid"
+              class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 transition disabled:bg-gray-400"
+            >
+              <span *ngIf="!isEditing">Cadastrar Lugar</span>
+              <span *ngIf="isEditing">Salvar Alterações</span>
+            </button>
+            <button
+              *ngIf="isEditing"
+              type="button"
+              (click)="onCancelEdit()"
+              class="w-full bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-md shadow-sm hover:bg-gray-300"
+            >
+              Cancelar Edição
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Lugares Cadastrados</h2>
+        <div
+          *ngIf="!spots || spots.length === 0"
+          class="text-center py-10 border-2 border-dashed rounded-md"
+        >
+          <h3 class="text-lg font-medium text-gray-900">Nenhum lugar cadastrado</h3>
+          <p class="mt-1 text-sm text-gray-500">
+            Use o formulário para adicionar o primeiro lugar.
+          </p>
+        </div>
+        <div *ngIf="spots && spots.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            *ngFor="let spot of spots"
+            class="border rounded-lg overflow-hidden shadow-md flex flex-col"
+          >
+            <img [src]="spot.urlPhoto" [alt]="spot.name" class="w-full h-40 object-cover" />
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-lg font-bold text-gray-900">{{ spot.name }}</h3>
+              <p class="text-sm text-gray-600">{{ spot.location }}</p>
+              <p class="text-sm text-blue-600 font-semibold mt-1">{{ spot.category }}</p>
+              <div class="my-2">
+                <p-rating [ngModel]="spot.review" [readonly]="true" />
+              </div>
+              <div class="mt-auto pt-2 flex justify-end space-x-2">
+                <button
+                  (click)="onEdit(spot)"
+                  class="p-2 text-blue-600 hover:text-blue-800"
+                  title="Editar"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L16.732 3.732z"
+                    ></path>
+                  </svg>
+                </button>
+                <button
+                  (click)="onDelete(spot.id)"
+                  class="p-2 text-red-500 hover:text-red-700"
+                  title="Excluir"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
