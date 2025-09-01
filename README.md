@@ -7,6 +7,8 @@
 
 This project is a web application called "Guia Passeio" (Tour Guide), developed to showcase and practice key skills in Angular. The application allows users to register, manage, and discover tourist spots, serving as a practical demonstration of building a modern, feature-rich Single Page Application (SPA).
 
+![Guia Passeio Showcase](public/home.png)
+
 ## Core Features
 
   - **Dynamic Feature Modules:** The application is structured with modules for different features like Categories and Spots.
