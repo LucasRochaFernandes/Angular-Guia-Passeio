@@ -1,0 +1,19 @@
+# Arquivos e pastas a serem ignorados durante o build do Docker
+
+# Dependências locais que não devem ser copiadas para a imagem
+node_modules
+
+# Pasta de saída do build (será gerada dentro do container)
+dist
+
+# Arquivos de log do NPM
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de ambiente locais
+.env
+
+# Metadados de controle de versão
+.git
+.gitignore

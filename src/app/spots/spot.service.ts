@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Spot } from './spot';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class SpotService {
-  private readonly BASE_URL = 'http://localhost:3000';
+  private readonly BASE_URL = environment.apiBaseUrl;
   constructor(private httpClient: HttpClient) {}
 
   create(spot: Spot): Observable<Spot> {

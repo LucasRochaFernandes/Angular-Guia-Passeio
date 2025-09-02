@@ -1,1 +1,4 @@
-export const environment = {};
+export const environment = {
+  apiBaseUrl: 'http://localhost:3000',
+  authClientId: '',
+};
