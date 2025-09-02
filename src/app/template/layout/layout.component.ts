@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthgoogleService } from '../../authgoogle.service';
 
 @Component({
   selector: 'app-layout',
@@ -9,10 +10,12 @@ import { Component } from '@angular/core';
 export class LayoutComponent {
   isMenuOpen: boolean = false;
 
+  constructor(private readonly loginService: AuthgoogleService) {}
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
   logout() {
-    console.log('Usuário deslogado!');
+    this.loginService.logout();
   }
 }
